@@ -1,0 +1,54 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Welcome Home
+{% endblock title %}
+
+{% block script %}
+<script>
+console.log('hello world!');
+</script>
+{% endblock script %}
+
+{% block content %}
+<h1>How you doing</h1>
+
+{% if messages %}
+  {% for message in messages %}
+  <div class="alert {{ message.tags }} alert-dismissible" role="alert">
+    
+      <span aria-hidden="true">&times;</span>
+    </button>
+    {{ message }}
+  </div>
+{% endfor %}
+{% endif %}
+
+<div class="form">
+	<form method="POST">
+		{% csrf_token %}
+		<input type="hidden" name="linkid" id="linkid">
+		{{form.as_p}}
+		{% if form.errors %}
+       {% for field in form %}
+           {% for error in field.errors %} 
+              <div class="alert alert-danger">
+                   <strong>{{ error|escape }}</strong>
+              </div>
+           {% endfor %}
+       {% endfor %}
+    {% endif %}
+		<button type="submit" name="save" value="save" class="btn btn-secondary" id="save-btn">Save</button>
+	</form>
+</div>
+
+<table>
+{% for url in data %}
+	<tr>
+		<td>{{url.url}}</td>
+		<td>{{url.short_url}}</td>
+		<td><a href={{url.short_url}} target="blank">{{url.short_url}}</a></td>
+	</tr>
+{% endfor %}
+</table>
+{% endblock content %}
